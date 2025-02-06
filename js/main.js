@@ -33,4 +33,28 @@ new Vue({
             return this.isSecondColumnFull && this.anyFirstColumnOver50
         }
     },
+    watch:{
+        cards:{
+            deep: true,
+            handler(cards){
+                cards.forEach(card => {
+                    const completed = card.items.filter(i => i.completed).length
+                    const total = card.item.length
+                    const progress = completed / total
+
+                    if (card.column === 1 && progress > 0.5){
+                        if(this.secondColumnCards.length < 5){
+                            card.column = 2
+                        }
+                    } else if ( card.column === 2 && progress === 1) {
+                        card.column = 3
+                        if(!card.completedDate){
+                            card.completedDate = new Date().toLocaleString()
+                        }
+                    }
+                })
+                this.saveCard()
+            }
+        }
+    }
 })
