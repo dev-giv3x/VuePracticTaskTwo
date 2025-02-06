@@ -1,3 +1,34 @@
+Vue.component('card-component', {
+    props: ['card', 'editable'],
+    computed: {
+        progress () {
+            const completed = this.card.items.filter(i => i.completed).length
+            return (completed / this.card.items.length) * 100
+        }
+    },
+    template: `
+    <div class ="card">
+    <h3>{{ card.title }}</h3>
+    <div class="progress-bar">
+        <div class="progress" :style="{ width: progress + '%'}"></div>
+    </div>
+    <ul>
+        <li v-for="(item, index) in card.items" :key="index">
+            <label>
+                <input type="checkbox" v-model="item.complated" :disable="!editable || card.column === 3">
+                <span : style"{ textDecoration: item.completed ? 'line-through' : 'none', color: item.completed ? '#95a5a6' : '#2c3e50'}">
+            {{ item.text }}
+                </span>
+            </label>
+        </li>
+    </ul>
+    <div v-if ="card.completedDate" class="completed-date">
+    Complete: {{ card.completedDate }} 
+    </div>
+</div>
+    `
+})
+
 new Vue({
     el: '#app',
     data(){
