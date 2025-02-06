@@ -13,33 +13,33 @@
 <body>
 <div id="app">
     <div class="columns">
-        <div class="column">
+        <div class="column" :class="{'blocked': isFirstColumnBlocked}">
             <h2>To Do (max 3)</h2>
-            <div>
-
+            <div v-for="card in firstColumnCards" :key="cards.id">
+                <card-component :card="card" :editable="!isFirstColumnBlocked"/>
             </div>
         </div>
         <div class="column">
             <h2>Progress (max 5)</h2>
-            <div>
-
+            <div v-for="card in secondColumnCards" :key="card.id">
+                <card-component :card="card" :editable="true"/>
             </div>
         </div>
     <div class="column">
         <h2>Done</h2>
-        <div>
-
+        <div v-for="card in thirdColumnCards" :key="card.id">
+            <card-component :card="card" />
         </div>
     </div>
 </div>
 <div class="add-card-form">
-    <input placeholder="Card Title">
-    <div>
-        <input placeholder="Item text">
+    <input v-model="newCardTitle" placeholder="Card Title">
+    <div v-for="(item, index) in newCardItems" :key="index">
+        <input v-model="newCardItems[index]" placeholder="Item text">
     </div>
-    <button>Add Item</button>
-    <button>Remove Item</button>
-    <button>Create Card</button>
+    <button @click="addItem" :disabled="newCardItems.length >= 5">Add Item</button>
+    <button @click="removeItem" :disabled="newCardItems.length <= 3">Remove Item</button>
+    <button @click="createCard">Create Card</button>
 </div>
 </div>
 </body>

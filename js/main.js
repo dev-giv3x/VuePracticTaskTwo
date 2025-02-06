@@ -27,7 +27,7 @@ Vue.component('card-component', {
     </div>
 </div>
     `
-})
+});
 
 new Vue({
     el: '#app',
@@ -39,7 +39,7 @@ new Vue({
         }
     },
     created(){
-        this.loadCrads();
+        this.loadCards();
     },
     computed: {
         firstColumnCards(){
