@@ -8,7 +8,11 @@ Vue.component('card-component', {
     },
     template: `
                 <div class="card">
-                    <h3>{{ card.title }}</h3>
+                    <h3>{{ card.title }}
+                    <span class="priority-badge" :class="'priority-' + card.priority">
+                        Priority {{ card.priority }}
+                    </span>
+                    </h3>
                     <div class="progress-bar">
                         <div class="progress" :style="{ width: progress + '%' }"></div>
                     </div>
@@ -40,13 +44,25 @@ new Vue({
         return {
             cards: [],
             newCardTitle: '',
-            newCardItems: ['', '', '']
+            newCardItems: ['', '', ''],
+            newCardPriority: 2,
+            filters: {1:'all', 2:'all', 3:'all'},
         }
     },
     created() {
         this.loadCards();
+        this.loadFilters();
     },
     computed: {
+        sortedFirstColumn(){
+            return this.processColumn(1, 3)
+        },
+        sortedSecondColumn(){
+            return this.processColumn(2, 5)
+        },
+        sortedThirdColumn(){
+            return this.processColumn(3, Infinity)
+        },
         firstColumnCards() {
             return this.cards.filter(card => card.column === 1).slice(0, 3);
         },
@@ -79,7 +95,6 @@ new Vue({
                     const progress = completed / total;
 
                     if (card.column === 1 && progress > 0.5) {
-                        // Проверяем есть ли место во втором столбце
                         if (this.secondColumnCards.length < 5) {
                             card.column = 2;
                         }
@@ -95,6 +110,16 @@ new Vue({
         }
     },
     methods: {
+        processColumn(column, max) {
+            let filtered =this.cards
+                .filter(card => card.column === column)
+                .sort((a, b) => a.priority - b.priority);
+
+            if(this.filters[column] !== 'all') {
+                filtered = filtered.filter(card => card.priority.toString() === this.filters[column])
+            }
+            return filtered.slice(0, max)
+        },
         addItem() {
             if (this.newCardItems.length < 5) {
                 this.newCardItems.push('');
@@ -115,12 +140,23 @@ new Vue({
                 id: Date.now(),
                 title: this.newCardTitle,
                 items: this.newCardItems.map(text => ({ text, completed: false })),
+                priority: parseInt(this.newCardPriority),
                 column: 1,
                 completedDate: null
             });
 
             this.newCardTitle = '';
             this.newCardItems = ['', '', ''];
+            this.newCardPriority = '2';
+        },
+        saveFilters(){
+            localStorage.setItem('filters', JSON.stringify(this.filters));
+        },
+        loadFilters() {
+            const savedFilters = localStorage.getItem('filters');
+            if (savedFilters) {
+                this.filters = JSON.parse(savedFilters);
+            }
         },
         saveCards() {
             localStorage.setItem('cards', JSON.stringify(this.cards));

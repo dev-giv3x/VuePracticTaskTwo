@@ -14,20 +14,44 @@
 <div id="app">
     <div class="columns">
         <div class="column" :class="{'blocked': isFirstColumnBlocked}">
+            <div class="filter-container">
             <h2>To Do (max 3)</h2>
-            <div v-for="card in firstColumnCards" :key="card.id">
+                <select class="priority-filter" v-model="filters[1]" @change="saveFilters">
+                    <option value="all">All</option>
+                    <option value="1">High Priority</option>
+                    <option value="2">Middle Priority</option>
+                    <option value="3">Low Priority</option>
+                </select>
+            </div>
+            <div v-for="card in sortedFirstColumn" :key="card.id">
                 <card-component :card="card" :editable="!isFirstColumnBlocked"/>
             </div>
         </div>
         <div class="column">
+            <div class="filter-container">
             <h2>Progress (max 5)</h2>
-            <div v-for="card in secondColumnCards" :key="card.id">
+                <select class="priority-filter"  v-model="filters[2]" @change="saveFilters">
+                    <option value="all">All</option>
+                    <option value="1">High Priority</option>
+                    <option value="2">Middle Priority</option>
+                    <option value="3">Low Priority</option>
+                </select>
+            </div>
+            <div v-for="card in sortedSecondColumn" :key="card.id">
                 <card-component :card="card" :editable="true"/>
             </div>
         </div>
     <div class="column">
+        <div class="filter-container">
         <h2>Done</h2>
-        <div v-for="card in thirdColumnCards" :key="card.id">
+            <select class="priority-filter" v-model="filters[3]" @change="saveFilters">
+                <option value="all">All</option>
+                <option value="1">High Priority</option>
+                <option value="2">Middle Priority</option>
+                <option value="3">Low Priority</option>
+            </select>
+        </div>
+        <div v-for="card in sortedThirdColumn" :key="card.id">
             <card-component :card="card" />
         </div>
     </div>
@@ -36,6 +60,15 @@
     <input v-model="newCardTitle" placeholder="Card Title">
     <div v-for="(item, index) in newCardItems" :key="index">
         <input v-model="newCardItems[index]" placeholder="Item text">
+    </div>
+    <div>
+        <label>Priority:
+            <select v-model="newCardPriority">
+                <option value="1">High (1)</option>
+                <option value="2">Middle (2)</option>
+                <option value="3">Low (3)</option>
+            </select>
+        </label>
     </div>
     <button @click="addItem" :disabled="newCardItems.length >= 5">Add Item</button>
     <button @click="removeItem" :disabled="newCardItems.length <= 3">Remove Item</button>

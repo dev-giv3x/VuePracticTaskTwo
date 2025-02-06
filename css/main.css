@@ -134,3 +134,24 @@ button:hover:not(:disabled){
 .card {
     animation: slideIn 0.3s ease-out;
 }
+.priority-filter {
+    margin-left: 15px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.priority-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+.priority-1 { background: #ff6b6b; color: white; }
+.priority-2 { background: #ffd93d; color: black; }
+.priority-3 { background: #4ecdc4; color: white; }
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
