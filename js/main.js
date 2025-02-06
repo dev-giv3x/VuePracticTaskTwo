@@ -56,5 +56,43 @@ new Vue({
                 this.saveCard()
             }
         }
+    },
+    method: {
+        addItem(){
+            if(this.newCardItems.length < 5){
+                this.newCardItems.push('')
+            }
+        },
+        removeItem(){
+            if(this.new.CardItems.length > 3){
+                this.newCardItems.pop()
+            }
+        },
+        createCard(){
+            if(!this.newCardTitle.trim() || this.newCardItems.some(i => !i.trim())){
+                alert('PLease fill all fields')
+                    return
+            }
+
+            this.cards.push({
+                id: Date.now(),
+                title: this.newCardTitle,
+                items: this.newCardItems.map(text => ({text, completed: false})),
+                column: 1,
+                completedDate: null
+            })
+
+            this.newCardTitle = ''
+            this.newCardItems = ['', '', '']
+        },
+        saveCards(){
+            localStorage.setItem('cards',JSON.stringify(this.cards))
+        },
+        loadCards(){
+            const savedCards = localStorage.getItem('cards')
+            if(savedCards) {
+                this.cards = JSON.parse(savedCards)
+            }
+        }
     }
 })
