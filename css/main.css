@@ -56,7 +56,7 @@ h2{
 .progress{
     height: 100%;
     background: #42b983;
-    transition: width 0.3 ease;
+    transition: width 0.3s ease;
 }
 ul{
     list-style: none;
@@ -127,11 +127,10 @@ button:disabled{
 button:hover:not(:disabled){
     background: #3aa876;
 }
-
-@keyframes slideIn{
-    from {transform: translateX(20px); opacity: 0;}
-    to {transform: translateX(0); opacity: 1;}
+@keyframes slideIn {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
-.card{
+.card {
     animation: slideIn 0.3s ease-out;
 }

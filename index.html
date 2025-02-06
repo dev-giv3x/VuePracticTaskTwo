@@ -15,7 +15,7 @@
     <div class="columns">
         <div class="column" :class="{'blocked': isFirstColumnBlocked}">
             <h2>To Do (max 3)</h2>
-            <div v-for="card in firstColumnCards" :key="cards.id">
+            <div v-for="card in firstColumnCards" :key="card.id">
                 <card-component :card="card" :editable="!isFirstColumnBlocked"/>
             </div>
         </div>
