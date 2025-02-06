@@ -76,7 +76,7 @@ new Vue({
             return this.secondColumnCards.length >= 5;
         },
         anyFirstColumnOver50() {
-            return this.firstColumnCards.some(card => {
+            return this.cards.filter(card => card.column === 1).some(card => {
                 const completed = card.items.filter(i => i.completed).length;
                 return completed / card.items.length > 0.5;
             });
@@ -98,10 +98,14 @@ new Vue({
                         if (this.secondColumnCards.length < 5) {
                             card.column = 2;
                         }
-                    } else if (card.column === 2 && progress === 1) {
-                        card.column = 3;
-                        if (!card.completedDate) {
-                            card.completedDate = new Date().toLocaleString();
+                    } else if (card.column === 2) {
+                        if (progress < 0.5) {
+                            card.column = 1;
+                        } else if (progress === 1) {
+                            card.column = 3;
+                            if (!card.completedDate) {
+                                card.completedDate = new Date().toLocaleString();
+                            }
                         }
                     }
                 });
